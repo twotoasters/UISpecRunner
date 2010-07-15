@@ -5,10 +5,10 @@
 require 'tmpdir'
 
 class UISpecRunner
-  attr_accessor :project, :target, :configuration, :sdk_version, :build_dir, :verbose
+  attr_accessor :project, :target, :configuration, :sdk_version, :build_dir, :verbose, :securityd
   
   # private
-  attr_accessor :run_mode, :class_name, :method_name, :protocol_name
+  attr_accessor :run_mode, :spec, :example, :protocol
   
   def initialize(options = {})
     options.each { |k,v| self.send("#{k}=", v) }
@@ -19,14 +19,13 @@ class UISpecRunner
   end    
   
   def run!
-    # TODO: Do the right thing based on command
     case run_mode
     when :all
       run_all!
-    when :class
-      run_class!(self.class_name)
-    when :method
-      run_class_method!(self.class_name, self.method_name)
+    when :spec
+      run_spec!(self.spec)
+    when :example
+      run_spec_example!(self.spec, self.example)
     when :protocol
       run_protocol!(self.protocol_name)
     else
@@ -42,12 +41,12 @@ class UISpecRunner
     run_specs('UISPEC_PROTOCOL' => protocol_name)
   end
   
-  def run_class!(class_name)
-    run_specs('UISPEC_CLASS' => class_name)
+  def run_spec!(spec_name)
+    run_specs('UISPEC_SPEC' => spec_name)
   end
   
-  def run_class_method!(class_name, method_name)
-    run_specs('UISPEC_CLASS' => class_name, 'UISPEC_METHOD' => method_name)
+  def run_spec_example!(spec_name, example_name)
+    run_specs('UISPEC_SPEC' => spec_name, 'UISPEC_EXAMPLE' => example_name)
   end
   
   def verbose?
@@ -55,15 +54,46 @@ class UISpecRunner
   end
   
   private
+    def run_command(command)
+      puts "Executing: #{command}" if verbose?
+      system(command)
+    end
+    
+    def path_to_securityd
+      "#{sdk_dir}/usr/libexec/securityd"
+    end
+    
+    def start_securityd
+      run_command("launchctl submit -l UISpecRunnerDaemons -- #{path_to_securityd}")
+      @securityd_running = true
+      Signal.trap("INT") { stop_securityd }
+      Signal.trap("TERM") { stop_securityd }
+      Signal.trap("EXIT") { stop_securityd }
+    end
+    
+    def stop_securityd
+      run_command("launchctl remove UISpecRunnerDaemons") if @securityd_running
+      @securityd_running = false
+    end
+    
     def run_specs(env = {})
      if build_project!
-       with_env('DYLD_ROOT_PATH' => sdk_dir, 'IPHONE_SIMULATOR_ROOT' => sdk_dir, 'CFFIXED_USER_HOME' => tmpdir) do
-         command = "#{build_dir}/Debug-iphonesimulator/#{target}.app/#{target} -RegisterForSystemEvents"
+       env.merge!('DYLD_ROOT_PATH' => sdk_dir, 'IPHONE_SIMULATOR_ROOT' => sdk_dir, 'CFFIXED_USER_HOME' => tmpdir)
+       puts "Setting environment variables: #{env.inspect}" if verbose?
+       with_env(env) do
+         start_securityd if securityd
+         command = "#{build_dir}/#{configuration}-iphonesimulator/#{target}.app/#{target} -RegisterForSystemEvents"
          puts "Executing: #{command}" if verbose?
-         system command
+         output = `#{command}`
+         exit_code = $?
+         unless exit_code == 0
+           puts "[!] Failed to run UISpec target: #{output}"
+           exit 1
+         end
        end
      else
        puts "[!] Failed to build UISpecs.app"
+       exit 1
      end
     end
     
@@ -87,10 +117,6 @@ class UISpecRunner
       command = "xcodebuild #{project_switch} -target #{target} -configuration #{configuration} #{sdk_switch} > /dev/null"
       puts "Building project with: #{command}" if verbose?
       system(command)
-    end
-    
-    def find_latest_sdk
-      # TODO
     end
     
     def with_env(env)

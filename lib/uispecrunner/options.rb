@@ -22,19 +22,19 @@ class UISpecRunner
         o.separator ""
         o.separator "Run Modes:"
         
-        o.on('-c', '--class [CLASS]', 'Run the specified UISpec class') do |class_name|
-          self[:class_name] = class_name
-          self[:run_mode] = :class
+        o.on('-s', '--spec [CLASS]', 'Run the specified UISpec class') do |spec|
+          self[:spec] = spec
+          self[:run_mode] = :spec
         end
         
-        o.on('-m', '--method [METHOD]', 'Run the specified spec method') do |method|
-          self[:method_name] = method
-          self[:run_mode] = :class
+        o.on('-e', '--example [METHOD]', 'Run the specified example method (requires --spec)') do |example|
+          self[:example] = example
+          self[:run_mode] = :example
           # TODO: Need to raise exception if method is specified without class
         end
         
         o.on('-p', '--protocol [PROTOCOL]', 'Run all UISpec classes implementing the Objective-C protocol') do |protocol|
-          self[:protocol_name] = protocol
+          self[:protocol] = protocol
           self[:run_mode] = :protocol
         end
         
@@ -53,13 +53,13 @@ class UISpecRunner
           self[:sdk_version] = sdk_version
         end                
         
-        o.on('--configuration [CONFIGURATION]',
+        o.on('-c', '--configuration [CONFIGURATION]',
              'Build with specified XCode configuration.',
              'Default: Debug') do |configuration|
           self[:configuration] = configuration
         end
         
-        o.on('--target [TARGET]',
+        o.on('-t', '--target [TARGET]',
              'Run the specified XCode target.',
              'Default: UISpec') do |target|
           self[:target] = target
@@ -69,6 +69,11 @@ class UISpecRunner
              'Run app in the build directory.',
              'Default: ./build') do |build_dir|
           self[:build_dir] = build_dir
+        end
+        
+        o.on('--securityd',
+             'Start the securityd daemon before running specs. This allow interaction with the keychain.') do |securityd|
+          self[:securityd] = securityd
         end
         
         o.on('-v', '--[no-]verbose', "Run verbosely") do |v|
@@ -87,6 +92,10 @@ class UISpecRunner
       rescue OptionParser::InvalidOption => e
         self[:invalid_argument] = e.message
       end
+    end
+    
+    def merge(other)
+      self.class.new(@orig_args + other.orig_args)
     end
   end
 end

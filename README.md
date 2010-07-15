@@ -1,10 +1,18 @@
 # UISpecRunner
 ### By Blake Watters <blake@twotoasters.com>
+### [http://github.com/twotoasters/UISpecRunner]()
 
 A flexible CLI test runner for use with the UISpec iOS BDD framework.
-Requires support in the main.m file for your UISpec target.
 
 Install the gem and run: `uispec -h` for details.
+
+## Requirements
+To utilize the uispec utility, you must add the UISpecRunner category
+to your project. This category provides support for running specs by
+Protocol and provides a general environment variable based runner. The
+category header and implementation file as well as a main.m are available
+in the src/ directory with this gem. Use `gem edit uispecrunner` or pull
+them from Github.
 
 ## Provides support for:
 - Running all specs
@@ -12,17 +20,16 @@ Install the gem and run: `uispec -h` for details.
 - Running a specific spec class and method
 - Switches for targeting different iOS SDK versions, project files, 
   configurations and targets
+- Starting securityd daemon to allow interaction with the keychain
 - Support for reading configuration settings from
 - A Ruby API for configuring your own spec runners
+- Will read common arguments from uispec.opts file for easy per project configuration
 
 ## TODO
-- Read options from uispec.opts
 - Auto-detect SDK versions available
-- Print build failure output
 - Rake file template
-- main.m file template
 - Support for running specific files
-- Support for running non-headless
+- Support for running non-headless (either via AppleScript or iphonesim)
 - Generate a Kicker script
 
 ## Copyright
