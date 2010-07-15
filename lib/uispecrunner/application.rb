@@ -20,7 +20,7 @@ class UISpecRunner
       options_file = 'uispec.opts'
       if File.exists?(options_file)
         option_file_args = File.readlines(options_file).map {|l| l.chomp.split " "}.flatten
-        options = options.merge(UISpecRunner::Options.new(option_file_args))
+        options = UISpecRunner::Options.new(option_file_args).merge(options)
       end
       
       runner = UISpecRunner.new(options)
