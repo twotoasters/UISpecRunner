@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{UISpecRunner}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Blake Watters"]
@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
      "LICENSE",
      "README.md",
      "Rakefile",
+     "UISpecRunner.gemspec",
      "VERSION",
      "bin/uispec",
      "lib/uispecrunner.rb",
