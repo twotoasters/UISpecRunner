@@ -1,11 +1,6 @@
 # UISpec Runner
 # By: Blake Watters <blake@twotoasters.com>
 # Portions borrowed from Eloy Duran's Kicker script (http://github.com/alloy/UISpec)
-#
-# Find the SDK versions (auto-prefer 4.0, then 3.0?)
-# Create a rake file...
-# Detect the project name?
-# Use IO.popen to show the output in real time?
 
 require 'tmpdir'
 
@@ -17,7 +12,6 @@ class UISpecRunner
   
   def initialize(options = {})
     options.each { |k,v| self.send("#{k}=", v) }
-    self.sdk_version ||= '3.0'
     self.target ||= 'UISpec'
     self.configuration ||= 'Debug'
     self.build_dir ||= './build'
@@ -85,14 +79,14 @@ class UISpecRunner
       "-project #{project}" if project
     end
     
-    def build_project!
-      command = "xcodebuild #{project_switch} -target #{target} -configuration #{configuration} -sdk #{sdk_dir} > /dev/null"
-      puts "Building project with: #{command}" if verbose?
-      system(command)
+    def sdk_switch
+      "-sdk #{sdk_dir}" if sdk_version
     end
     
-    def find_first_project
-      # TODO
+    def build_project!
+      command = "xcodebuild #{project_switch} -target #{target} -configuration #{configuration} #{sdk_switch} > /dev/null"
+      puts "Building project with: #{command}" if verbose?
+      system(command)
     end
     
     def find_latest_sdk

@@ -7,20 +7,17 @@ class UISpecRunner
       
       @orig_args = args.clone
       
+      # Configure default settings
+      self[:run_mode] = :all
       self[:target] = 'UISpec'
       self[:configuration] = 'Debug'
       self[:build_dir] = './build'
+      self[:verbose] = false
+      self[:sdk_version] = '3.0'
       
       require 'optparse'
       @opts = OptionParser.new do |o|
-        o.banner = "Usage: #{File.basename($0)} [options]\ne.g. #{File.basename($0)}"
-        
-        # Configure default settings
-        self[:run_mode] = :all
-        self[:target] = 'UISpec'
-        self[:configuration] = 'Debug'
-        self[:build_dir] = './build'
-        self[:verbose] = false
+        o.banner = "Usage: #{File.basename($0)} [options]\ne.g. #{File.basename($0)}"                
         
         o.separator ""
         o.separator "Run Modes:"
@@ -44,7 +41,9 @@ class UISpecRunner
         o.separator ""
         o.separator "Environment options:"
         
-        o.on('--project [PROJECT_FILE]', 'Run the UISpec target in specified project') do |project|
+        o.on('--project [PROJECT_FILE]',
+             'Run the UISpec target in specified project',
+             'Default: auto-detect project in current directory') do |project|
           self[:project] = project
         end
         
