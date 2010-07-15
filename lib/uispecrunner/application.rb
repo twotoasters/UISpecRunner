@@ -1,6 +1,3 @@
-# TODO: Should be able to install a Rake file
-# TODO: Should be able to install a main.m runner file.
-# TODO: Should be able to auto-detect sdk version
 require 'uispecrunner'
 require 'uispecrunner/options'
 
@@ -18,9 +15,7 @@ class UISpecRunner
         $stderr.puts options.opts
         return 1
       end
-      
-      # puts "Arguments are: #{options.opts}"
-      # exit 1
+            
       runner = UISpecRunner.new(options)
       runner.run!
       return 0
