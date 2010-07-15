@@ -4,7 +4,7 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "UISpecRunner"
+    gem.name = "uispecrunner"
     gem.summary = %Q{Flexible spec runner for UISpec on iOS}
     gem.description = %Q{Provides a simple Ruby interface for running UISpec iPhone tests}
     gem.email = "blake@twotoasters.com"

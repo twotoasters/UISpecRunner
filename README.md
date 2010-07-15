@@ -22,6 +22,8 @@ Install the gem and run: `uispec -h` for details.
 - Rake file template
 - main.m file template
 - Support for running specific files
+- Support for running non-headless
+- Generate a Kicker script
 
 ## Copyright
 
