@@ -21,6 +21,7 @@ Install the gem and run: `uispec -h` for details.
 - Print build failure output
 - Rake file template
 - main.m file template
+- Support for running specific files
 
 ## Copyright
 
