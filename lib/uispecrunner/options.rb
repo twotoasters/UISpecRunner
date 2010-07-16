@@ -2,6 +2,11 @@ class UISpecRunner
   class Options < Hash
     attr_reader :opts, :orig_args
     
+    def self.from_file(options_file)
+      args = File.readlines(options_file).map {|l| l.chomp.split " "}.flatten
+      UISpecRunner::Options.new(args)
+    end
+    
     def initialize(args)
       super()
       

@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{uispecrunner}
-  s.version = "0.2.2"
+  s.version = "0.2.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Blake Watters"]
-  s.date = %q{2010-07-15}
+  s.date = %q{2010-07-16}
   s.default_executable = %q{uispec}
   s.description = %q{Provides a simple Ruby interface for running UISpec iPhone tests}
   s.email = %q{blake@twotoasters.com}
@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".gitignore",
+     "CHANGELOG",
      "LICENSE",
      "README.md",
      "Rakefile",
@@ -35,6 +36,7 @@ Gem::Specification.new do |s|
      "src/UISpec+UISpecRunner.h",
      "src/UISpec+UISpecRunner.m",
      "src/main.m",
+     "tasks/uispec.rake",
      "uispecrunner.gemspec"
   ]
   s.homepage = %q{http://github.com/twotoasters/UISpecRunner}

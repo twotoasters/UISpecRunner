@@ -19,8 +19,7 @@ class UISpecRunner
       # Read standard arguments from uispec.opts
       options_file = 'uispec.opts'
       if File.exists?(options_file)
-        option_file_args = File.readlines(options_file).map {|l| l.chomp.split " "}.flatten
-        options = UISpecRunner::Options.new(option_file_args).merge(options)
+        options = UISpecRunner::Options.from_file(options_file).merge(options)
       end
       
       runner = UISpecRunner.new(options)
