@@ -14,7 +14,12 @@ category header and implementation file as well as a main.m are available
 in the src/ directory with this gem. Use `gem edit uispecrunner` or pull
 them from Github.
 
-## Provides support for:
+*NOTE* - Be sure you update your app delegate class in main.m if necessary.
+Compare the call to `UIApplicationMain` from your normal app's main.m
+to the spec runner. Example:
+  `int retVal = UIApplicationMain(argc, argv, nil, @"MyAppDelegateClassHere");`
+
+## Features
 - Running all specs
 - Running all specs in a class
 - Running a specific spec class and method
@@ -25,6 +30,7 @@ them from Github.
 - A Ruby API for configuring your own spec runners
 - Will read common arguments from uispec.opts file for easy per project configuration
 - Includes a sample Rakefile for running your UISpec's
+- Support for setting arbitrary environment variables on the runner
 
 ## TODO
 - Auto-detect SDK versions available

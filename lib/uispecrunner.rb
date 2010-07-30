@@ -5,7 +5,7 @@
 require 'tmpdir'
 
 class UISpecRunner
-  attr_accessor :project, :target, :configuration, :sdk_version, :build_dir, :verbose, :securityd
+  attr_accessor :project, :target, :configuration, :sdk_version, :build_dir, :verbose, :securityd, :env
   
   # private
   attr_accessor :run_mode, :spec, :example, :protocol
@@ -16,6 +16,7 @@ class UISpecRunner
     self.configuration ||= 'Debug'
     self.build_dir ||= './build'
     self.run_mode ||= :all
+    self.env ||= {}
   end    
   
   def run!
@@ -27,7 +28,7 @@ class UISpecRunner
     when :example
       run_spec_example!(self.spec, self.example)
     when :protocol
-      run_protocol!(self.protocol_name)
+      run_protocol!(self.protocol)
     else
       raise ArgumentError, "Unknown run mode: #{run_mode}"
     end    
@@ -78,9 +79,10 @@ class UISpecRunner
     
     def run_specs(env = {})
      if build_project!
-       env.merge!('DYLD_ROOT_PATH' => sdk_dir, 'IPHONE_SIMULATOR_ROOT' => sdk_dir, 'CFFIXED_USER_HOME' => tmpdir)
-       puts "Setting environment variables: #{env.inspect}" if verbose?
-       with_env(env) do
+       run_env = self.env.merge(env)
+       run_env.merge!('DYLD_ROOT_PATH' => sdk_dir, 'IPHONE_SIMULATOR_ROOT' => sdk_dir, 'CFFIXED_USER_HOME' => tmpdir)
+       puts "Setting environment variables: #{run_env.inspect}" if verbose?
+       with_env(run_env) do
          start_securityd if securityd
          command = "#{build_dir}/#{configuration}-iphonesimulator/#{target}.app/#{target} -RegisterForSystemEvents"
          puts "Executing: #{command}" if verbose?
