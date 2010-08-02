@@ -31,11 +31,11 @@ to the spec runner. Example:
 - Will read common arguments from uispec.opts file for easy per project configuration
 - Includes a sample Rakefile for running your UISpec's
 - Support for setting arbitrary environment variables on the runner
+- Supports running specs via shell (xcodebuild) or AppleScript (osascript)
 
 ## TODO
 - Auto-detect SDK versions available
 - Support for running specific files
-- Support for running non-headless (either via AppleScript or iphonesim)
 - Generate a Kicker script
 - Enabling Zombies (or other debugging flags, see http://code.google.com/p/google-toolbox-for-mac/source/browse/trunk/UnitTesting/RunIPhoneUnitTest.sh)
 

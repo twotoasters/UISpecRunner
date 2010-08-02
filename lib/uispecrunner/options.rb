@@ -19,6 +19,7 @@ class UISpecRunner
       self[:build_dir] = './build'
       self[:verbose] = false
       self[:sdk_version] = '3.0'
+      self[:driver] = :shell
       
       require 'optparse'
       @opts = OptionParser.new do |o|
@@ -50,6 +51,12 @@ class UISpecRunner
              'Run the UISpec target in specified project',
              'Default: auto-detect project in current directory') do |project|
           self[:project] = project
+        end
+        
+        o.on('--driver [DRIVER]', [:shell, :osascript],
+             "Select driver (shell, osascript)",
+             'Default: shell') do |driver|
+              self[:driver] = driver.to_sym
         end
         
         o.on('--sdk [VERSION]',
