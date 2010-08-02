@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{uispecrunner}
-  s.version = "0.2.4"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Blake Watters"]
-  s.date = %q{2010-07-30}
+  s.date = %q{2010-08-02}
   s.default_executable = %q{uispec}
   s.description = %q{Provides a simple Ruby interface for running UISpec iPhone tests}
   s.email = %q{blake@twotoasters.com}
@@ -28,6 +28,8 @@ Gem::Specification.new do |s|
      "bin/uispec",
      "lib/uispecrunner.rb",
      "lib/uispecrunner/application.rb",
+     "lib/uispecrunner/drivers/osascript.rb",
+     "lib/uispecrunner/drivers/shell.rb",
      "lib/uispecrunner/options.rb",
      "spec/options_spec.rb",
      "spec/spec.opts",
