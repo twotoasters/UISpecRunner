@@ -34,6 +34,7 @@ to the spec runner. Example:
 - Supports running specs via shell (xcodebuild) or AppleScript (osascript)
 
 ## TODO
+- Simulator/device switch...
 - Auto-detect SDK versions available
 - Support for running specific files
 - Generate a Kicker script

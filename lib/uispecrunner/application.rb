@@ -17,7 +17,7 @@ class UISpecRunner
       end
       
       # Read standard arguments from uispec.opts
-      options_file = 'uispec.opts'
+      options_file = File.join(Dir.getwd, 'uispec.opts')
       if File.exists?(options_file)
         options = UISpecRunner::Options.from_file(options_file).merge(options)
       end
