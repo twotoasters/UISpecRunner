@@ -60,7 +60,7 @@
     classes = malloc(sizeof(Class) * numClasses);
     numClasses = objc_getClassList(classes, numClasses);
     
-    NSMutableArray *result = [NSMutableArray array];
+    NSMutableArray *result = [NSMutableArray arrayWithObject:parentClass];
     for (NSInteger i = 0; i < numClasses; i++)
     {
         Class superClass = classes[i];
