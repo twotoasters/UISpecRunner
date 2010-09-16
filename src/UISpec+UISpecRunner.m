@@ -6,8 +6,8 @@
 //  Copyright 2010 Two Toasters. All rights reserved.
 //
 
-#import <objc/runtime.h>
 #import "UISpec+UISpecRunner.h"
+#import <objc/runtime.h>
 
 @interface UISpec ()
 
@@ -53,6 +53,43 @@
 	[self performSelector:@selector(runSpecClasses:) withObject:specClasses afterDelay:delay];
 }
 
++(NSArray*)specClassesInheritingFromClass:(Class)parentClass {
+	int numClasses = objc_getClassList(NULL, 0);
+    Class *classes = NULL;
+	
+    classes = malloc(sizeof(Class) * numClasses);
+    numClasses = objc_getClassList(classes, numClasses);
+    
+    NSMutableArray *result = [NSMutableArray array];
+    for (NSInteger i = 0; i < numClasses; i++)
+    {
+        Class superClass = classes[i];
+        do
+        {
+            superClass = class_getSuperclass(superClass);
+        } while(superClass && superClass != parentClass);
+        
+        if (superClass == nil)
+        {
+            continue;
+        }
+        
+		if ([self isASpec:classes[i]]) {
+			[result addObject:classes[i]];
+		}
+    }
+	
+    free(classes);
+    
+    return result;
+}
+
++(void)runSpecsInheritingFromClass:(Class)class afterDelay:(NSTimeInterval)delay {
+	NSArray* specClasses = [self specClassesInheritingFromClass:class];
+	NSLog(@"Executing Specs: %@", specClasses);
+	[self performSelector:@selector(runSpecClasses:) withObject:specClasses afterDelay:delay];
+}
+
 +(void)runSpecsFromEnvironmentAfterDelay:(int)seconds {
 	char* protocolName = getenv("UISPEC_PROTOCOL");
 	char* specName = getenv("UISPEC_SPEC");
@@ -68,8 +105,9 @@
 		NSLog(@"[UISpecRunner] Running Examples %s on Spec %s", exampleName, specName);
 		[UISpec runSpec:[NSString stringWithUTF8String:specName] example:[NSString stringWithUTF8String:exampleName] afterDelay:seconds];
 	} else if (specName) {
-		NSLog(@"[UISpecRunner] Running Spec %s", specName);
-		[UISpec runSpec:[NSString stringWithUTF8String:specName] afterDelay:seconds];
+		NSLog(@"[UISpecRunner] Running Spec classes inheriting from %s", specName);
+		Class class = NSClassFromString([NSString stringWithUTF8String:specName]);
+		[UISpec runSpecsInheritingFromClass:class afterDelay:seconds];
 	} else {
 		[UISpec runSpecsAfterDelay:seconds];
 	}	
