@@ -11,12 +11,12 @@ class UISpecRunner
       
       def run_specs(env)
         if build_project!
-          run_env = self.env.merge(env)
+          run_env = config.env.merge(env)
           run_env.merge!('DYLD_ROOT_PATH' => sdk_dir, 'IPHONE_SIMULATOR_ROOT' => sdk_dir, 'CFFIXED_USER_HOME' => Dir.tmpdir)
-          puts "Setting environment variables: #{run_env.inspect}" if uispec_runner.verbose?
+          puts "Setting environment variables: #{run_env.inspect}" if config.verbose?
           with_env(run_env) do
             start_securityd if config.securityd
-            command = "#{build_dir}/#{configuration}-iphonesimulator/#{target}.app/#{target} -RegisterForSystemEvents"
+            command = "#{config.build_dir}/#{config.configuration}-iphonesimulator/#{config.target}.app/#{config.target} -RegisterForSystemEvents"
             puts "Executing: #{command}" if config.verbose?
             output = `#{command}`
             exit_code = $?

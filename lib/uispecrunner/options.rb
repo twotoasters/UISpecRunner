@@ -18,7 +18,7 @@ class UISpecRunner
       self[:configuration] = 'Debug'
       self[:build_dir] = './build'
       self[:verbose] = false
-      self[:sdk_version] = '3.0'
+      self[:sdk_version] = '4.0'
       self[:driver] = :shell
       
       require 'optparse'
@@ -61,7 +61,7 @@ class UISpecRunner
         
         o.on('--sdk [VERSION]',
              'Run the UISpec target against the iPhone SDK version',
-             'Default: 3.0') do |sdk_version|
+             'Default: 4.0') do |sdk_version|
           self[:sdk_version] = sdk_version
         end                
         
