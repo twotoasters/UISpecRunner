@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{uispecrunner}
-  s.version = "0.3.2"
+  s.version = "0.3.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Blake Watters"]
-  s.date = %q{2010-09-16}
+  s.date = %q{2011-02-15}
   s.default_executable = %q{uispec}
   s.description = %q{Provides a simple Ruby interface for running UISpec iPhone tests}
   s.email = %q{blake@twotoasters.com}
@@ -44,7 +44,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/twotoasters/UISpecRunner}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.6}
+  s.rubygems_version = %q{1.3.7}
   s.summary = %q{Flexible spec runner for UISpec on iOS}
   s.test_files = [
     "spec/options_spec.rb",
@@ -56,7 +56,7 @@ Gem::Specification.new do |s|
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_development_dependency(%q<rspec>, [">= 1.2.9"])
     else
       s.add_dependency(%q<rspec>, [">= 1.2.9"])
