@@ -14,12 +14,12 @@ class UISpecRunner
       
       # Configure default settings
       self[:run_mode] = :all
-      self[:target] = 'UISpec'
       self[:configuration] = 'Debug'
       self[:build_dir] = './build'
       self[:verbose] = false
       self[:sdk_version] = '4.0'
       self[:driver] = :shell
+      self[:exit_on_finish] = true
       
       require 'optparse'
       @opts = OptionParser.new do |o|
@@ -53,6 +53,17 @@ class UISpecRunner
           self[:project] = project
         end
         
+        o.on('--workspace [WORKSPACE_PATH]',
+             'Run the UISpec scheme in the specified Xcode workspace at the path') do |workspace|
+          self[:workspace] = workspace
+        end
+        
+        o.on('--scheme [SCHEME_NAME]',
+             'Build and run the specified XCode scheme.',
+             'Default: UISpec (If workspace provided)') do |scheme|
+          self[:scheme] = scheme
+        end
+        
         o.on('--driver [DRIVER]', [:shell, :osascript],
              "Select driver (shell, osascript)",
              'Default: shell') do |driver|
@@ -84,23 +95,33 @@ class UISpecRunner
         end
         
         o.on('--securityd',
-             'Start the securityd daemon before running specs. This allow interaction with the keychain.') do |securityd|
+             'Start the securityd daemon before running specs. This allows interaction with the keychain.') do |securityd|
           self[:securityd] = securityd
+        end
+        
+        o.on('--no-exit', 'Do not exit the process after running the specs') do |exit_on_finish|
+          self[:exit_on_finish] = exit_on_finish
         end
         
         o.on('-v', '--[no-]verbose', "Run verbosely") do |v|
           self[:verbose] = v
         end
         
-        o.on_tail('-h', '--help', 'display this help and exit') do
+        o.on_tail('-h', '--help', 'Display this help and exit') do
           self[:show_help] = true
         end
       end
       
       begin
         @opts.parse!(args)
+        
+        # Set default Scheme name if Workspace was provided
+        if self[:workspace]
+          self[:scheme] ||= 'UISpec'
+        else
+          self[:target] ||= 'UISpec'
+        end
         # TODO: Support running specific files
-        #self[:project_name] = args.shift
       rescue OptionParser::InvalidOption => e
         self[:invalid_argument] = e.message
       end

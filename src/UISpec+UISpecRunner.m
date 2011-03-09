@@ -8,6 +8,40 @@
 
 #import "UISpec+UISpecRunner.h"
 #import <objc/runtime.h>
+#import "UIConsoleLog.h"
+#import "UISpec.h"
+
+@interface UISpecRunnerLog : UIConsoleLog {
+    BOOL _exitOnFinish;
+}
+
+// When YES, the application will terminate after specs finish running
+@property (nonatomic, assign) BOOL exitOnFinish;
+
+@end
+
+@implementation UISpecRunnerLog
+
+@synthesize exitOnFinish = _exitOnFinish;
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        _exitOnFinish = NO;
+    }
+    
+    return self;
+}
+
+-(void)onFinish:(int)count {
+    [super onFinish:count];
+    
+    if (self.exitOnFinish) {
+        exit(errors.count);
+    }
+}
+
+@end
 
 @interface UISpec ()
 
@@ -94,6 +128,15 @@
 	char* protocolName = getenv("UISPEC_PROTOCOL");
 	char* specName = getenv("UISPEC_SPEC");
 	char* exampleName = getenv("UISPEC_EXAMPLE");
+    char* exitOnFinish = getenv("UISPEC_EXIT_ON_FINISH");
+    
+    UISpecRunnerLog* log = [[UISpecRunnerLog alloc] init];
+    [UISpec setLog:(UILog*)log];
+    
+    if (NULL == exitOnFinish || [[NSString stringWithUTF8String:exitOnFinish] isEqualToString:@"YES"]) {
+        log.exitOnFinish = YES;
+    }
+    
 	if (protocolName) {
 		Protocol* protocol = NSProtocolFromString([NSString stringWithUTF8String:protocolName]);
 		NSLog(@"[UISpecRunner] Running Specs conforming to Protocol: %@", [NSString stringWithUTF8String:protocolName]);
@@ -110,7 +153,7 @@
 		[UISpec runSpecsInheritingFromClass:class afterDelay:seconds];
 	} else {
 		[UISpec runSpecsAfterDelay:seconds];
-	}	
+	}
 }
 
 @end

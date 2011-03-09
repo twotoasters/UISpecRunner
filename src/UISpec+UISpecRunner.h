@@ -26,6 +26,7 @@
  * UISPEC_PROTOCOL - Specifies a protocol to run
  * UISPEC_SPEC - Specifies a spec class to run
  * UISPEC_METHOD - Specifies an example to run (requires UISPEC_SPEC to be set)
+ * UISPEC_EXIT_ON_FINISH - When YES, instructs UISpecRunner to terminate the application when specs run is complete
  */
 +(void)runSpecsFromEnvironmentAfterDelay:(int)seconds;
 

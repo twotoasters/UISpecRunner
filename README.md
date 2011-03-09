@@ -31,9 +31,11 @@ to the spec runner. Example:
 - Will read common arguments from uispec.opts file for easy per project configuration
 - Includes a sample Rakefile for running your UISpec's
 - Support for setting arbitrary environment variables on the runner
-- Supports running specs via shell (xcodebuild) or AppleScript (osascript)
+- Builds project using xcodebuild
+- Supports running specs via shell or AppleScript (osascript)
 
 ## TODO
+- Run via WaxSim
 - Simulator/device switch...
 - Auto-detect SDK versions available
 - Support for running specific files

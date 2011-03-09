@@ -11,6 +11,7 @@ begin
     gem.homepage = "http://github.com/twotoasters/UISpecRunner"
     gem.authors = ["Blake Watters"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
+    gem.add_runtime_dependency "open4", "= 1.0.1"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
