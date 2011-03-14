@@ -7,6 +7,7 @@ gem 'open4', '>= 1.0.1'
 require 'open4'
 require 'uispecrunner/xcode_builder'
 require 'uispecrunner/drivers/shell'
+require 'uispecrunner/drivers/waxsim'
 require 'uispecrunner/drivers/osascript'
 
 class UISpecRunner
@@ -24,7 +25,7 @@ class UISpecRunner
     self.configuration ||= 'Debug'
     self.build_dir ||= './build'
     self.run_mode ||= :all
-    self.driver ||= :shell
+    self.driver ||= :waxsim
     self.exit_on_finish ||= true
     self.env ||= {}
   end    
@@ -92,11 +93,12 @@ class UISpecRunner
   
   private
     def driver_class
-      # TODO: Add WaxSim...
       if self.driver == :shell
         UISpecRunner::Drivers::Shell
       elsif self.driver == :osascript
         UISpecRunner::Drivers::OSAScript
+      elsif self.driver == :waxsim
+        UISpecRunner::Drivers::WaxSim
       end
     end
     

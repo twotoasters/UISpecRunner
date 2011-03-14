@@ -5,30 +5,40 @@
 
 Gem::Specification.new do |s|
   s.name = %q{uispecrunner}
-  s.version = "0.4.0"
+  s.version = "0.4.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Blake Watters"]
-  s.date = %q{2011-03-09}
+  s.date = %q{2011-03-12}
   s.default_executable = %q{uispec}
   s.description = %q{Provides a simple Ruby interface for running UISpec iPhone tests}
   s.email = %q{blake@twotoasters.com}
   s.executables = ["uispec"]
+  s.extensions = ["ext/Rakefile"]
   s.extra_rdoc_files = [
     "LICENSE",
     "README.md"
   ]
   s.files = [
+    ".gitmodules",
     "CHANGELOG",
     "LICENSE",
     "README.md",
     "Rakefile",
     "VERSION",
     "bin/uispec",
+    "ext/Rakefile",
+    "ext/WaxSim/Simulator.h",
+    "ext/WaxSim/Simulator.m",
+    "ext/WaxSim/WaxSim.m",
+    "ext/WaxSim/WaxSim.xcodeproj/project.pbxproj",
+    "ext/WaxSim/WaxSim_Prefix.pch",
+    "ext/WaxSim/iPhoneSimulatorRemoteClient/iPhoneSimulatorRemoteClient.h",
     "lib/uispecrunner.rb",
     "lib/uispecrunner/application.rb",
     "lib/uispecrunner/drivers/osascript.rb",
     "lib/uispecrunner/drivers/shell.rb",
+    "lib/uispecrunner/drivers/waxsim.rb",
     "lib/uispecrunner/options.rb",
     "lib/uispecrunner/xcode_builder.rb",
     "spec/options_spec.rb",

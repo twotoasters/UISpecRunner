@@ -1,0 +1,5 @@
+task :install do
+  sh "cd WaxSim && xcodebuild install DSTROOT=../../ INSTALL_PATH=/ext/bin"
+end
+
+task :default => :install

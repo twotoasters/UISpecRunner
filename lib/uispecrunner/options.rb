@@ -18,7 +18,7 @@ class UISpecRunner
       self[:build_dir] = './build'
       self[:verbose] = false
       self[:sdk_version] = '4.0'
-      self[:driver] = :shell
+      self[:driver] = :waxsim
       self[:exit_on_finish] = true
       
       require 'optparse'
@@ -64,9 +64,9 @@ class UISpecRunner
           self[:scheme] = scheme
         end
         
-        o.on('--driver [DRIVER]', [:shell, :osascript],
-             "Select driver (shell, osascript)",
-             'Default: shell') do |driver|
+        o.on('--driver [DRIVER]', [:shell, :osascript, :waxsim],
+             "Select driver (shell, osascript, waxsim)",
+             'Default: waxsim') do |driver|
               self[:driver] = driver.to_sym
         end
         
