@@ -15,7 +15,7 @@ class UISpecRunner
   attr_accessor :workspace, :scheme, :project, :target, :configuration, :sdk_version, :build_dir
   
   # Run Options
-  attr_accessor :verbose, :securityd, :driver, :env, :exit_on_finish, :app_path
+  attr_accessor :verbose, :securityd, :driver, :env, :exit_on_finish, :app_path, :skip_build
   
   # private
   attr_accessor :run_mode, :spec, :example, :protocol
@@ -105,12 +105,12 @@ class UISpecRunner
     def run_specs(env = {})
       puts "Building project..."
       builder = UISpecRunner::XcodeBuilder.new(self)
-      if builder.build!
+      if self.skip_build || builder.build! == 0
         @app_path ||= builder.app_path
         puts "Running specs via #{driver}..."
         env['UISPEC_EXIT_ON_FINISH'] = self.exit_on_finish? ? 'YES' : 'NO'
         driver = driver_class.new(self)      
-        driver.run_specs(env)
+        driver.run_specs(env.merge(self.env))
         # TODO: Exit with exit code from the process...
       else
         puts "Failed to build"

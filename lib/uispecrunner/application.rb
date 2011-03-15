@@ -11,9 +11,16 @@ class UISpecRunner
         options[:show_help] = true
       end
 
-      if options[:show_help]
+      if options[:command] == :help
         $stderr.puts options.opts
         return 1
+      end
+      
+      if options[:command] == :version
+        version_path = File.join(File.dirname(__FILE__), '..', '..', 'VERSION')
+        version = File.read(version_path)
+        $stdout.puts version
+        return 0
       end
       
       # Read standard arguments from uispec.opts

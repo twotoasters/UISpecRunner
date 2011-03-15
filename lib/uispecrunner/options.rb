@@ -20,6 +20,7 @@ class UISpecRunner
       self[:sdk_version] = '4.0'
       self[:driver] = :waxsim
       self[:exit_on_finish] = true
+      self[:env] = {}
       
       require 'optparse'
       @opts = OptionParser.new do |o|
@@ -46,6 +47,12 @@ class UISpecRunner
         
         o.separator ""
         o.separator "Environment options:"
+        
+        o.on('-a', '--app [APP_PATH]',
+             'Run the app at the specified path',
+             'Default: auto-detect the app during the build') do |app_path|
+          self[:app_path] = app_path
+        end
         
         o.on('--project [PROJECT_FILE]',
              'Run the UISpec target in specified project',
@@ -103,12 +110,26 @@ class UISpecRunner
           self[:exit_on_finish] = exit_on_finish
         end
         
+        o.on('-S', '--skip-build', 'Do not build the app, just run the specs') do |skip_build|
+          self[:skip_build] = skip_build
+        end
+        
         o.on('-v', '--[no-]verbose', "Run verbosely") do |v|
           self[:verbose] = v
         end
         
+        o.on('-E', '--env [VARIABLE=VALUE]',
+             'Specify an environment variable to pass to the application.') do |env|
+          key, value = env.split('=')
+          self[:env][key] = value
+        end
+        
+        o.on('--version', 'Show version') do
+          self[:command] = :version
+        end
+        
         o.on_tail('-h', '--help', 'Display this help and exit') do
-          self[:show_help] = true
+          self[:command] = :help
         end
       end
       
