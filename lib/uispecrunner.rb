@@ -15,7 +15,7 @@ class UISpecRunner
   attr_accessor :workspace, :scheme, :project, :target, :configuration, :sdk_version, :build_dir
   
   # Run Options
-  attr_accessor :verbose, :securityd, :driver, :env, :exit_on_finish, :app_path, :skip_build
+  attr_accessor :verbose, :securityd, :driver, :env, :exit_on_finish, :app_path, :skip_build, :family
   
   # private
   attr_accessor :run_mode, :spec, :example, :protocol

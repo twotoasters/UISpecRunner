@@ -15,10 +15,14 @@ class UISpecRunner
         File.join(WAXSIM_BIN_DIR, 'waxsim')
       end
       
+      def family_switch
+        "-f #{config.family}" if config.family
+      end
+      
       def run_specs(env)
         env_args = env.map { |k,v| "-e #{k}=#{v} "}.join(' ')
         # TODO: Add support for family...
-        command = %Q{#{waxsim_path} -s #{config.sdk_version} #{env_args} "#{config.app_path}"}
+        command = %Q{#{waxsim_path} -s #{config.sdk_version} #{family_switch} #{env_args} "#{config.app_path}"}
         puts "Executing: #{command}"
         `#{command}`
       end

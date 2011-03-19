@@ -95,6 +95,12 @@ class UISpecRunner
           self[:target] = target
         end
         
+        o.on('-f', '--family [FAMILY]',
+             'Utilize the specified device family: iphone or ipad. (Requires --driver waxsim)',
+             'Default: iphone') do |family|
+          self[:family] = family
+        end
+        
         o.on('--builddir [BUILD_DIR]',
              'Run app in the build directory.',
              'Default: ./build') do |build_dir|
