@@ -18,11 +18,7 @@ class UISpecRunner
           command = "#{config.app_executable_path} -RegisterForSystemEvents"
           puts "Executing: #{command}" if config.verbose?
           output = `#{command}`
-          exit_code = $?
-          unless exit_code == 0
-            puts "[!] Failed specs running UISpec target (exit code #{exit_code})"
-            exit 1
-          end
+          return $?
         end        
       end
       

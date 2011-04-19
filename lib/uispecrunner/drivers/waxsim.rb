@@ -21,10 +21,17 @@ class UISpecRunner
       
       def run_specs(env)
         env_args = env.map { |k,v| "-e #{k}=#{v} "}.join(' ')
-        # TODO: Add support for family...
+        exit_status = nil
         command = %Q{#{waxsim_path} -s #{config.sdk_version} #{family_switch} #{env_args} "#{config.app_path}"}
-        puts "Executing: #{command}"
+        puts "Executing command: #{command}" if config.verbose?
         `#{command}`
+        
+        # TODO: Total hack. Can't figure out how to get the exit status any other way.
+        # WaxSim can't get the child pid because the process isn't forked as a child. The output
+        # can't be parsed directly because of funkiness with the file descriptors. Better ideas?
+        exit_status = `tail /var/log/system.log| grep "Exiting with status code:"`.split(/code\:\s/).last.to_i
+        
+        return exit_status
       end
     end
   end

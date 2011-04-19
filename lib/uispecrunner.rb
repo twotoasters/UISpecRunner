@@ -110,8 +110,11 @@ class UISpecRunner
         puts "Running specs via #{driver}..."
         env['UISPEC_EXIT_ON_FINISH'] = self.exit_on_finish? ? 'YES' : 'NO'
         driver = driver_class.new(self)      
-        driver.run_specs(env.merge(self.env))
-        # TODO: Exit with exit code from the process...
+        exit_code = driver.run_specs(env.merge(self.env))
+        unless exit_code == 0
+          puts "[!] Failed specs running UISpec target (exit code #{exit_code})"
+          exit(exit_code)
+        end
       else
         puts "Failed to build"
         # TODO: Exit with the exit code from xcodebuild...
