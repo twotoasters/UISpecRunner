@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{uispecrunner}
-  s.version = "0.4.3"
+  s.version = "0.4.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Blake Watters"]
-  s.date = %q{2011-03-19}
+  s.date = %q{2011-04-19}
   s.default_executable = %q{uispec}
   s.description = %q{Provides a simple Ruby interface for running UISpec iPhone tests}
   s.email = %q{blake@twotoasters.com}
@@ -32,6 +32,10 @@ Gem::Specification.new do |s|
     "ext/WaxSim/Simulator.m",
     "ext/WaxSim/WaxSim.m",
     "ext/WaxSim/WaxSim.xcodeproj/project.pbxproj",
+    "ext/WaxSim/WaxSim.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+    "ext/WaxSim/WaxSim.xcodeproj/project.xcworkspace/xcuserdata/blake.xcuserdatad/UserInterfaceState.xcuserstate",
+    "ext/WaxSim/WaxSim.xcodeproj/xcuserdata/blake.xcuserdatad/xcschemes/WaxSim.xcscheme",
+    "ext/WaxSim/WaxSim.xcodeproj/xcuserdata/blake.xcuserdatad/xcschemes/xcschememanagement.plist",
     "ext/WaxSim/WaxSim_Prefix.pch",
     "ext/WaxSim/iPhoneSimulatorRemoteClient/iPhoneSimulatorRemoteClient.h",
     "lib/uispecrunner.rb",
