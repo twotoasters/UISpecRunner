@@ -79,8 +79,23 @@ class UISpecRunner
     "#{xcode_root}/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator#{self.sdk_version}.sdk"
   end
   
+  def cached_app_filename
+    '.uispec.app'
+  end
+  
+  def read_cached_app_path
+    File.read(cached_app_filename).chomp if File.exists?(cached_app_filename)
+  end
+  
+  def write_cached_app_path
+    if @app_path
+      puts "Cached app path '#{app_path}'" unless File.exists?(cached_app_filename)
+      File.open(cached_app_filename, 'w') { |f| f << @app_path }
+    end
+  end
+  
   def app_path
-    @app_path || "#{self.build_dir}/#{self.configuration}-iphonesimulator/#{self.target}.app/#{self.target}"
+    @app_path || read_cached_app_path || "#{self.build_dir}/#{self.configuration}-iphonesimulator/#{self.target}.app/#{self.target}"
   end
   
   def app_executable_name
@@ -107,6 +122,7 @@ class UISpecRunner
       builder = UISpecRunner::XcodeBuilder.new(self)
       if self.skip_build || builder.build! == 0
         @app_path ||= builder.app_path
+        write_cached_app_path
         puts "Running specs via #{driver}..."
         env['UISPEC_EXIT_ON_FINISH'] = self.exit_on_finish? ? 'YES' : 'NO'
         driver = driver_class.new(self)      
